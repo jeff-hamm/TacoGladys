@@ -1,0 +1,22 @@
+﻿@using System.Linq
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using TacoLib
+@using TacoLib.Data
+@model TacoLib.Tests.data.TacoGauges
+
+
+<span>
+    <label for="addGauge">Add Gauge</label>
+@(Html.DropDownList("Value",AvailableGauges,"Select a gauge",new { style="width:100%", id="addGauge"})
+    )
+  </span>
+
+@functions
+{
+
+        protected IEnumerable<SelectListItem> AvailableGauges =>
+            Enum<TacoValueId>.GetNameValuePairs().Where(kvp => !Model.Layout.Select(l => l.DefValueId?.ToString()).Contains(kvp.Value.ToString()))
+                .Select(kvp => new SelectListItem(kvp.Key,kvp.Value?.ToString()));
+
+    }

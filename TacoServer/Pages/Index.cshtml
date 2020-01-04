@@ -1,0 +1,36 @@
+﻿@page
+@model TacoGladysModel
+
+    <div class="container-wrapper">
+        @foreach (var layoutGroup in Model.Gauges.Layout.GroupBy(l => l.Type))
+        {
+            <div class="layout-group @layoutGroup.Key">
+                @foreach (var layout in layoutGroup)
+                {
+                    @switch (layout.Type ?? GaugeType.Text)
+                    {
+                        case GaugeType.Radial:
+                            <partial name="Shared/_RadialGauge" model="layout"/>
+                            break;
+                        case GaugeType.Text:
+                            <partial name="Shared/_TextGauge" model="layout"/>
+                            break;
+                        case GaugeType.Boolean:
+                            <partial name="Shared/_BoolGauge" model="layout"/>
+                            break;
+                    }
+                }
+            </div>
+
+        }
+    </div>
+    <div id="status" class="container-wrapper">
+        <span> <label for="fps" class="text-lg-left">FPS:</label><span id="fps" class="text-lg-left"></span></span>
+    </dv>
+    <div id="controls" class="container-wrapper">
+        <partial name="Shared/_AddGauge" model="Model.Gauges" />
+    </div>
+
+@section Scripts {
+    <script src="~/js/tacoStream.js"></script>
+}

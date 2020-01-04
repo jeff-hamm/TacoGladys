@@ -1,0 +1,26 @@
+﻿@using System.Text.Json
+@using System.Text.Json.Serialization
+@model TacoGaugeLayout
+
+
+<div class="gauge-container radial">
+    @(Html.Kendo().RadialGauge()
+        .Name($"radialGauge{Model.DefValueId}")
+        .HtmlAttributes(new Dictionary<string, object>()
+        {
+            {"data-layout", JsonSerializer.Serialize(Model) },
+            {"data-id", Model.DefValueId},
+            {"kendo-type", "gauge" },
+            {"gauge-type","radial" }
+
+        })
+        .Pointer(pointer => pointer.Value(0))
+        .Scale(scale => scale
+            .MinorUnit(5)
+            .StartAngle(-30)
+            .EndAngle(210)
+            .Max((Model.Max as double?) ?? 100.0)
+            .Min((Model.Min as double?) ?? 0.0)
+        ))
+    <label for="radialGauge@(Model.DefValueId)" id="gaugeName">@Model.Name</label>
+</div>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AldlDummy": {
+      "commandName": "Project",
+      "commandLineArgs": "-d"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+﻿@using System.Text.Json
+@using System.Text.Json.Serialization
+@model TacoGaugeLayout
+
+@{
+    var id = $"iconGaugeModel{Model.DefValueId}";
+}
+<div class="gauge-container bool">
+    <div class="icon-data">
+        <h1 id="@id" data-layout="@JsonSerializer.Serialize(Model)" data-id="@Model.DefValueId"
+            kendo-type="image" gauge-type="boolean"></h1>
+    </div>
+    <label for="@id" id="label@(id)">@Model.Name</label>
+</div>
