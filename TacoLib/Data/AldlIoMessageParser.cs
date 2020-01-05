@@ -122,8 +122,16 @@ namespace TacoLib.Data
                     // padding
                     r.ReadInt32(ref bytes);
                     r.ReadByte(ref bytes);
-                    if (r.ReadChar(ref bytes) != '|' || r.ReadChar(ref bytes) != '\n')
-                        throw new InvalidOperationException($"{i},{def.Id}");
+                    var p = r.ReadChar(ref bytes);
+                    var n = r.ReadChar(ref bytes);
+                    if (p != '|' || n != '\n')
+                    {
+                        var st = $"{p}{n}";
+                        while (s.CanRead && (n = r.ReadChar()) != '\n')
+                            st += n;
+                        throw new InvalidOperationException($"{i},{def.Id}, {st}");
+                    }
+
                     l.Add(def);
                     _logger.LogDebug($"Loaded definition {i} {def.Id}, {def.Description}");
                 }
