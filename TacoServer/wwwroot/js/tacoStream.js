@@ -14,13 +14,17 @@ var renderStartTime;
 var lastUpdate;
 var lastRenderStart;
 
+
 function beginRendering() {
-    renderStartTime = window.performance.now();
-    console.log(renderStartTime);
-    requestAnimationFrame(renderGauges);
+//    renderStartTime = window.performance.now();
+//    console.log(renderStartTime);
+    requestAnimationFrame(function() {
+        renderGauges();
+    });
 }
 
-function updateFps(renderStart) {
+function updateFps() {
+    var renderStart = window.performance.now();
     if (lastRenderStart) {
         var delta = renderStart - lastRenderStart;
         var fps = (1000 / delta).toFixed(2);
@@ -32,20 +36,15 @@ function updateFps(renderStart) {
     }
     lastRenderStart = renderStart;
 }
-function renderGauges(newtime) {
-    requestAnimationFrame(renderGauges);
-    if (!valuesChanged)
-        return;
-
-
-    updateFps(newtime);
+function renderGauges() {
+//    updateFps();
+    renderId = null;
     Object.keys(gauges).forEach((key, ix) => {
         var g = gauges[key];
         if (g.value != null) {
             g.updateValue(g);
         }
     });
-    valuesChanged = false;
 }
 
 function loadGauges() {
@@ -87,6 +86,7 @@ function loadGaugeType(selector, mapTo,type, updateValueFn) {
     });
 }
 
+var renderId;
 $(document).ready(() => {
     fpsElement = $('#fps');
     loadGauges();
@@ -95,13 +95,14 @@ $(document).ready(() => {
         .then(() => {
             connection.invoke("SetGaugeIds", Object.keys(gauges))
                 .then(() => {
-                    beginRendering();
+//                    beginRendering();
                     connection.stream("TacoGauges", Object.keys(gauges)).subscribe({
                         next: (item) => {
-                            valuesChanged = true;
                             Object.keys(gauges).forEach((key, ix) => {
                                 gauges[key].value =item[key];
                             });
+                            if(!renderId)
+                                renderId = requestAnimationFrame(renderGauges);
                         },
                         complete: () => {
                             var li = document.createElement("li");
