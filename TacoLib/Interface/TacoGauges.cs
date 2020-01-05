@@ -42,8 +42,6 @@ namespace TacoLib.Tests.data
         {
             foreach(var layout in layouts)
                 yield return ConfigureLayout(layout);
-
-            _configService.WriteConfig();
             _configured = true;
         }
 

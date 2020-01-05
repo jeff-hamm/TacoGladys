@@ -42,7 +42,7 @@ namespace TacoLib
             using var document = JsonDocument.Parse(json);
             try
             {
-                using var writeStream = File.OpenWrite(jsonConfigPath);
+                using var writeStream = new FileStream(jsonConfigPath, FileMode.Create);
                 using var writer = new Utf8JsonWriter(writeStream, ConfigWriterOptions);
                 writer.WriteStartObject();
                 foreach (var element in document.RootElement.EnumerateObject())
