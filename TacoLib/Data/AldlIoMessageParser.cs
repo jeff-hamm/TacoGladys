@@ -96,10 +96,11 @@ namespace TacoLib.Data
                         Unit = r.ReadAsciiString(ref bytes),
                         Description = r.ReadAsciiString(ref bytes),
                     };
+                    bytes = 0;
                     // throw away pointers
-                    r.ReadInt64(ref bytes);
-                    r.ReadInt64(ref bytes);
-                    r.ReadInt64(ref bytes);
+                    r.ReadPointer(ref bytes);
+                    r.ReadPointer(ref bytes);
+                    r.ReadPointer(ref bytes);
                     def.log = r.ReadInt32AsBool(ref bytes);
                     def.display = r.ReadInt32AsBool(ref bytes);
                     def.alarm_low_enable= r.ReadInt32AsBool(ref bytes);
@@ -120,8 +121,8 @@ namespace TacoLib.Data
                     def.invert = r.ReadByteAsBool(ref bytes);
                     def.err = r.ReadByte(ref bytes);
                     // padding
-                    r.ReadInt32(ref bytes);
-                    r.ReadByte(ref bytes);
+                    while (bytes < defSize)
+                        r.ReadByte(ref bytes);
                     var p = r.ReadChar(ref bytes);
                     var n = r.ReadChar(ref bytes);
                     if (p != '|' || n != '\n')

@@ -31,6 +31,15 @@ namespace TacoLib.Interop
             return r.ReadByte() != 0;
         }
 
+        public static long ReadPointer(this BinaryReader r, ref int bytes)
+        {
+            if (Environment.Is64BitOperatingSystem)
+                return r.ReadInt64(ref bytes);
+            else
+                return r.ReadInt32(ref bytes);
+
+        }
+
         public static long ReadInt64(this BinaryReader r, ref int bytes)
         {
             bytes += 8;

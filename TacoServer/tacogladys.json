@@ -10,7 +10,7 @@
     "DataSource": "TacoLib.StdInDataSource",
     "TacoStreamFileName": "./data/demolog.bin",
     "DataSourceBufferSize": 4096,
-    "AldlIoPath": "aldl-dummy",
+    "AldlIoPath": "C:\\Users\\jhamm\\OneDrive\\Projects\\TacoGladys\\Web\\RpiBlazor\\AldlDummy\\bin\\Debug\\netcoreapp3.1\\AldlDummy.exe",
     "MessageReaderFailedRetryDelayS": 5,
     "TacoStreamProcessRestartS": 1,
     "Layouts": [
