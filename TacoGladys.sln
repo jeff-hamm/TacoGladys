@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectricPink.BlazorComponents", "..\..\..\software_only\Web\ElectricPink.BlazorComponents\ElectricPink.BlazorComponents.csproj", "{965B5BA0-E878-4014-9FCC-D5AD42FB8C98}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TacoServer", "TacoServer\TacoServer.csproj", "{811D0E43-C08E-4B85-8AF1-BA7890AAACF8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TacoLib", "TacoLib\TacoLib.csproj", "{B0CCF6E5-D02D-41D2-B006-5949D7FF71C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TacoLib.Tests", "TacoLib.Tests\TacoLib.Tests.csproj", "{03B65131-A3D0-4F06-AC50-5406F205BF23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AldlDummy", "AldlDummy\AldlDummy.csproj", "{7412AE08-A000-4968-A9F3-29FFEDE30C25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AldlDummy", "AldlDummy\AldlDummy.csproj", "{7412AE08-A000-4968-A9F3-29FFEDE30C25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{965B5BA0-E878-4014-9FCC-D5AD42FB8C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{965B5BA0-E878-4014-9FCC-D5AD42FB8C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{965B5BA0-E878-4014-9FCC-D5AD42FB8C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{965B5BA0-E878-4014-9FCC-D5AD42FB8C98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{811D0E43-C08E-4B85-8AF1-BA7890AAACF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{811D0E43-C08E-4B85-8AF1-BA7890AAACF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{811D0E43-C08E-4B85-8AF1-BA7890AAACF8}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace TacoLib.Interop
 {
@@ -27,17 +28,17 @@ namespace TacoLib.Interop
 
     public class ProcessTacoStreamFactory : TacoStreamFactory
     {
-        private readonly TacoConfiguration _config;
+        private readonly IOptionsMonitor<TacoConfiguration> _configMonitor;
         private readonly ILogger<ProcessTacoStream> _logger;
 
-        public ProcessTacoStreamFactory(TacoConfiguration config, ILogger<ProcessTacoStream> logger) : base(config, logger)
+        public ProcessTacoStreamFactory(IOptionsMonitor<TacoConfiguration> configMonitor, ILogger<ProcessTacoStream> logger) : base(configMonitor.CurrentValue, logger)
         {
-            _config = config;
+            _configMonitor = configMonitor;
             _logger = logger;
         }
 
         protected override Task<RestartableStream> CreateStream(TacoStreamType t) =>
-                Task.FromResult((RestartableStream) new ProcessTacoStream(_config, t, _logger));
+                Task.FromResult((RestartableStream) new ProcessTacoStream(_configMonitor, t, _logger));
     }
 
     public abstract class TacoStreamFactory : ITacoStreamFactory

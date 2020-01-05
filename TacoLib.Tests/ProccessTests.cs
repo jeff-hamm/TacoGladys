@@ -28,7 +28,6 @@ namespace TacoLib.Tests
                 .Build();
             IServiceCollection services = new ServiceCollection()
                 .AddLogging(b => { b.AddConsole(); });
-            services.Configure()
             services.AddTacoServices(null);
             Provider = services.BuildServiceProvider();
             _parser = base.GetFormatter();

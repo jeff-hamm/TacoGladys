@@ -6,24 +6,32 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace TacoLib.Interop
 {
     public class ProcessTacoStream : RestartableStream
     {
-        private readonly TacoConfiguration _config;
+        private readonly IOptionsMonitor<TacoConfiguration> _configMonitor;
         private readonly TacoStreamType _streamType;
         private readonly ILogger<ProcessTacoStream> _logger;
         private readonly CancellationTokenSource _disposeSource = new CancellationTokenSource();
         private readonly CancellationToken _disposeToken;
         public Process Process { get; private set; }
 
-        public ProcessTacoStream(TacoConfiguration config, TacoStreamType streamType, ILogger<ProcessTacoStream> logger) : base(logger)
+        public ProcessTacoStream(IOptionsMonitor<TacoConfiguration> configMonitor, TacoStreamType streamType, ILogger<ProcessTacoStream> logger) : base(logger)
         {
-            _config = config;
+            _configMonitor = configMonitor;
+            _configMonitor.OnChange(ConfigChanged);
             _streamType = streamType;
             _logger = logger;
             _disposeToken = _disposeSource.Token;
+        }
+
+        private bool _configChanged;
+        public void ConfigChanged(TacoConfiguration config)
+        {
+            _configChanged = true;
         }
 
         private AsyncLock _openLock = new AsyncLock();
@@ -62,17 +70,18 @@ namespace TacoLib.Interop
             token.ThrowIfCancellationRequested();
             _disposeToken.ThrowIfCancellationRequested();
             ClearIfExited();
-            if (Process?.HasExited == false) 
+            if (!_configChanged && Process?.HasExited == false) 
                 return Process;
             lock (_processLock)
             {
-                if (Process?.HasExited == false) 
+                if (!_configChanged && Process?.HasExited == false) 
                     return Process;
+                _configChanged = false;
                 _innerStream?.Dispose();
                 _innerStream = null;
                 Process = new Process()
                 {
-                    StartInfo = new ProcessStartInfo(_config.AldlIoPath)
+                    StartInfo = new ProcessStartInfo(_configMonitor.CurrentValue.AldlIoPath)
                     {
                         RedirectStandardInput = true,
                         RedirectStandardOutput = true,
@@ -149,7 +158,7 @@ namespace TacoLib.Interop
         public int ConsecutiveRestartErrors { get; private set; }
 
         protected override bool NeedsRestart() => Process?.StandardOutput?.BaseStream == null || Process == null ||
-                                                Process.HasExited == true;
+                                                Process.HasExited == true || _configChanged;
         protected override bool IsDisposing() => _disposing || _disposeToken.IsCancellationRequested ||
                                                (_processToken?.IsCancellationRequested ?? false);
 
@@ -170,7 +179,7 @@ namespace TacoLib.Interop
         protected override async Task RestartStream(bool consecutive, CancellationToken? token=null)
         {
             if(consecutive)
-                await Task.Delay(_config.TacoStreamProcessRestartS);
+                await Task.Delay(_configMonitor.CurrentValue.TacoStreamProcessRestartS);
 
                 // the existing token should still be registered
             BeginProcess(token ?? _processToken ?? default);

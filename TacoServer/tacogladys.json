@@ -1,5 +1,139 @@
 ﻿{
   "TacoGladys": {
-
+    "MaxBufferCount": 1000,
+    "DataSize": 4,
+    "DataPadding": 18,
+    "DataCount": 69,
+    "DataBufferSize": 294,
+    "MessageSize": 100,
+    "MaxIdleMs": 30000,
+    "DataSource": "TacoLib.StdInDataSource",
+    "TacoStreamFileName": "./data/demolog.bin",
+    "DataSourceBufferSize": 4096,
+    "AldlIoPath": "aldl-dummy",
+    "MessageReaderFailedRetryDelayS": 5,
+    "TacoStreamProcessRestartS": 1,
+    "Layouts": [
+      {
+        "DefValueId": 3,
+        "Id": "RPM",
+        "Name": "SCALED RPM",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 0,
+        "Min": 0,
+        "Max": 4103,
+        "Size": null
+      },
+      {
+        "DefValueId": 14,
+        "Id": "SPEED",
+        "Name": "VEHICLE SPEED",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 0,
+        "Min": 0,
+        "Max": 39064,
+        "Size": null
+      },
+      {
+        "DefValueId": 5,
+        "Id": "COOLTMP",
+        "Name": "COOLANT TEMPERATURE",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 0,
+        "Min": 10,
+        "Max": 151.25,
+        "Size": null
+      },
+      {
+        "DefValueId": 25,
+        "Id": "LBPW",
+        "Name": "LEFT BASE INJETOR PULSE WIDTH",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 0,
+        "Min": 0,
+        "Max": 7,
+        "Size": null
+      },
+      {
+        "DefValueId": 26,
+        "Id": "RBPW",
+        "Name": "RIGHT BASE INJETOR PULSE WIDTH",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 0,
+        "Min": 0,
+        "Max": 7,
+        "Size": null
+      },
+      {
+        "DefValueId": 28,
+        "Id": "BLM",
+        "Name": "BLOCK LEARN ENABLED",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 1,
+        "Min": false,
+        "Max": false,
+        "Size": null
+      },
+      {
+        "DefValueId": 7,
+        "Id": "LBLM",
+        "Name": "LEFT BLM",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 1,
+        "Min": 0,
+        "Max": 39064,
+        "Size": null
+      },
+      {
+        "DefValueId": 8,
+        "Id": "RBLM",
+        "Name": "RIGHT BLM",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 1,
+        "Min": 0,
+        "Max": 39064,
+        "Size": null
+      },
+      {
+        "DefValueId": 22,
+        "Id": "LINT",
+        "Name": "LEFT INTEGRATOR",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 1,
+        "Min": 0,
+        "Max": 39064,
+        "Size": null
+      },
+      {
+        "DefValueId": 23,
+        "Id": "RINT",
+        "Name": "RIGHT INTEGRATOR",
+        "X": null,
+        "Y": null,
+        "Width": null,
+        "Type": 1,
+        "Min": 0,
+        "Max": 39064,
+        "Size": null
+      }
+    ]
   }
 }

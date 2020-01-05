@@ -28,7 +28,9 @@ namespace TacoServer
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddJsonFile(
+                    config
+                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                        .AddJsonFile(
                         "tacogladys.json", optional: false, reloadOnChange: true);
                 })
                 .ConfigureLogging((context, logging) =>

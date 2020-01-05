@@ -17,11 +17,13 @@ namespace TacoLib.Tests.data
     {
         private TacoDefinition[] _definitions;
         private readonly ITacoDataSource _dataSource;
+        private readonly TacoConfigurationService _configService;
 
-        public TacoGauges(TacoConfiguration config, ITacoDataSource dataSource)
+        public TacoGauges(ITacoDataSource dataSource, TacoConfigurationService configService)
         {
             _dataSource = dataSource;
-            _layouts = config.Layouts;
+            _configService = configService;
+            _layouts = configService.Config.Layouts;
         }
         public TacoGauges(IEnumerable<TacoGaugeLayout> layouts, TacoDefinition[] definitions)
         {
@@ -40,6 +42,8 @@ namespace TacoLib.Tests.data
         {
             foreach(var layout in layouts)
                 yield return ConfigureLayout(layout);
+
+            _configService.WriteConfig();
             _configured = true;
         }
 
