@@ -16,7 +16,9 @@ namespace TacoLib
         public int DataCount { get; set; } 
 
         private int? _bufferSize;
-        public int DataBufferSize => _bufferSize ??= (DataCount * DataSize) + DataPadding;
+        public int DataBufferSize => _bufferSize ??= (DataCount * DataSize) + 
+            10 + 
+            (Environment.Is64BitOperatingSystem ? 8 : 4);
 
         public int MessageSize { get; set; }
         public int MaxIdleMs { get; set; } 

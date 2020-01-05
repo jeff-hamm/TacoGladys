@@ -40,6 +40,8 @@ namespace TacoLib.Interop
 
         }
 
+        public static long ReadTimestamp(this BinaryReader r, ref int bytes) =>
+            r.ReadPointer(ref bytes);
         public static long ReadInt64(this BinaryReader r, ref int bytes)
         {
             bytes += 8;

@@ -30,7 +30,8 @@ namespace TacoLib.Data
         {
             message = default;
             var r = new BinaryReader(s, Encoding.ASCII, true);
-            var t = r.ReadInt64();
+            int bytes = 0;
+            var t = r.ReadTimestamp(ref bytes);
             var count = r.ReadInt32();
             var dataSize = r.ReadInt32();
             if (count != _config.DataCount || t < 0 || _config.DataSize != dataSize)
