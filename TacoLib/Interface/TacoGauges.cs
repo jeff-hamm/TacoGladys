@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Transactions;
 using TacoLib.Data;
 using TacoLib.Interface;
 using TacoLib.Interop;
@@ -12,25 +15,43 @@ namespace TacoLib.Tests.data
 {
     public class TacoGauges
     {
+        private TacoDefinition[] _definitions;
+        private readonly ITacoDataSource _dataSource;
+
+        public TacoGauges(TacoConfiguration config, ITacoDataSource dataSource)
+        {
+            _dataSource = dataSource;
+            _layouts = config.Layouts;
+        }
         public TacoGauges(IEnumerable<TacoGaugeLayout> layouts, TacoDefinition[] definitions)
         {
-            Layout = ConfigureLayouts(layouts, definitions).ToArray();
-        }
-        public IEnumerable<TacoGaugeLayout> ConfigureLayouts(IEnumerable<TacoGaugeLayout> layouts, TacoDefinition[] definitions)
-        {
-            foreach(var layout in layouts)
-                yield return ConfigureLayout(layout,definitions);
+            _definitions = definitions;
+            _layouts = ConfigureLayouts(layouts).ToArray();
         }
 
-        public TacoGaugeLayout ConfigureLayout(TacoGaugeLayout layout, TacoDefinition[] definitions)
+        public void UpdateLayout(IEnumerable<TacoGaugeLayout> layouts)
         {
-            
-            var def = definitions?.FirstOrDefault(d => (layout.DefValueId.HasValue && d.ValueId == layout.DefValueId)
+            _layouts = layouts.ToArray();
+            _configured = false;
+        }
+
+        private bool _configured = false;
+        internal IEnumerable<TacoGaugeLayout> ConfigureLayouts(IEnumerable<TacoGaugeLayout> layouts)
+        {
+            foreach(var layout in layouts)
+                yield return ConfigureLayout(layout);
+            _configured = true;
+        }
+
+        internal TacoGaugeLayout ConfigureLayout(TacoGaugeLayout layout)
+        {
+            if(_definitions == null) throw new ArgumentException(nameof(_definitions));
+            var def = _definitions?.FirstOrDefault(d => (layout.DefValueId.HasValue && d.ValueId == layout.DefValueId)
                                                       || (!String.IsNullOrEmpty(layout.Id) && d.Id == layout.Id))??default;
           //  if (String.IsNullOrEmpty(def.Id)) throw new Exception($"{layout.DefValueId}, {layout.Id}, {definitions?.Length}");
             return ConfigureLayout(layout, def);
         }
-        public TacoGaugeLayout ConfigureLayout(TacoGaugeLayout layout, TacoDefinition d)
+        internal TacoGaugeLayout ConfigureLayout(TacoGaugeLayout layout, TacoDefinition d)
         {
             layout.Id = d.Id;
             layout.DefValueId = d.ValueId;
@@ -42,7 +63,28 @@ namespace TacoLib.Tests.data
             return layout;
         }
 
-        public TacoGaugeLayout[] Layout { get; }
+        public async Task<TacoGaugeLayout[]> EnsureConfiguredAsync(CancellationToken token=default)
+        {
+            if (_definitions == null)
+                _definitions = await _dataSource.GetDefinitionsAsync(token);
+            if(!_configured)
+                _layouts = ConfigureLayouts(_layouts).ToArray();
+            return _layouts;
+        }
+
+        private TacoGaugeLayout[] _layouts;
+
+        public TacoGaugeLayout[] Layout
+        {
+            get
+            {
+                if(_definitions == null)
+                    return Task.Run(() => EnsureConfiguredAsync(CancellationToken.None)).GetAwaiter().GetResult();
+                if(!_configured)
+                    _layouts = ConfigureLayouts(_layouts).ToArray();
+                return _layouts;
+            }
+        }
     }
 
 }

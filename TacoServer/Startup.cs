@@ -30,13 +30,15 @@ namespace TacoServer
         {
             services.AddRazorPages();
             services.AddKendo();
-
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
-            services.AddTacoServices();
+            services.AddTacoServices(options =>
+            {
+                options.ConfigFileName = "tacogladys.json";
+            });
             services.AddSignalR()
                 .AddHubOptions((HubOptions<Hub> o) => { o.EnableDetailedErrors = true; })
 //                .AddHubOptions(c => c.EnableDetailedErrors = true)

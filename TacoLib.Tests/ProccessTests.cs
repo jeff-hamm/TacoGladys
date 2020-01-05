@@ -28,7 +28,8 @@ namespace TacoLib.Tests
                 .Build();
             IServiceCollection services = new ServiceCollection()
                 .AddLogging(b => { b.AddConsole(); });
-            services.AddTacoServices<ProcessTacoStream>(null);
+            services.Configure()
+            services.AddTacoServices(null);
             Provider = services.BuildServiceProvider();
             _parser = base.GetFormatter();
             _reader = Provider.GetService<TacoMessageReaderRunner>();
