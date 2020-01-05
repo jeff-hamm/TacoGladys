@@ -11,6 +11,7 @@ namespace TacoLib
         public TacoConfigurationService(TacoConfigurationOptions config)
         {
             _config = config;
+            _config.Config = ReadConfig(JsonConfigPath);
         }
 
         public TacoConfiguration Config => _config.Config;
@@ -34,6 +35,9 @@ namespace TacoLib
         {
             WriteIndented = true
         };
+
+        internal static TacoConfiguration ReadConfig(string jsonConfigPath) =>
+            JsonSerializer.Deserialize<TacoConfiguration>(System.IO.File.ReadAllText(jsonConfigPath));
 
         internal static void WriteConfig(string jsonConfigPath, TacoConfiguration config)
         {
