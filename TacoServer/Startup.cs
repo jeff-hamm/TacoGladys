@@ -35,6 +35,8 @@ namespace TacoServer
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+            services.AddOptions();
+            services.Configure<TacoConfiguration>(Configuration.GetSection("TacoGladys"));
             services.AddTacoServices(options =>
             {
                 options.ConfigFileName = "tacogladys.json";

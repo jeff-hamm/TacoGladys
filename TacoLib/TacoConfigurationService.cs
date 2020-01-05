@@ -36,8 +36,13 @@ namespace TacoLib
             WriteIndented = true
         };
 
+        private class TacoConfigurationFile
+        {
+            public TacoConfiguration TacoGladys { get; set; }
+        }
+
         internal static TacoConfiguration ReadConfig(string jsonConfigPath) =>
-            JsonSerializer.Deserialize<TacoConfiguration>(System.IO.File.ReadAllText(jsonConfigPath));
+            JsonSerializer.Deserialize<TacoConfigurationFile>(System.IO.File.ReadAllText(jsonConfigPath)).TacoGladys;
 
         internal static void WriteConfig(string jsonConfigPath, TacoConfiguration config)
         {
